@@ -10,19 +10,13 @@ class Lingo::Terminal
     raw_input.starts_with?(search)
   end
 
-  def parse(raw_input)
+  def parse?(raw_input)
     if raw_input.starts_with?(search)
-      new_string = raw_input.sub(search, "")
+      new_string = raw_input[search.size..-1]
       match = search
-      ParseResult.new(match: match, string: new_string, name: name)
+      Lingo::Token.new(value: match, remainder: new_string, name: name)
     else
       nil
-    end
-  end
-
-  class ParseResult
-    getter :match, :string, :name
-    def initialize(@match="", @string="", @name=:sym)
     end
   end
 end

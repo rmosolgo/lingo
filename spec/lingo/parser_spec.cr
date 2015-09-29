@@ -1,9 +1,5 @@
 require "../spec_helper"
 
-def math_parser
-  MathParser.new
-end
-
 describe "Lingo::Parser" do
   describe ".rule / rule methods" do
     it "exposes Rules" do
@@ -15,9 +11,9 @@ describe "Lingo::Parser" do
 
   describe "#parse" do
     it "returns named results" do
-      result = math_parser.parse("1+1") as Lingo::Terminal::ParseResult
-      result.match.should eq("+")
-      result.name.should eq(:plus)
+      result = math_parser.parse("1+1")
+      result.value.should eq("1+1")
+      result.name.should eq(:expression)
     end
   end
 end

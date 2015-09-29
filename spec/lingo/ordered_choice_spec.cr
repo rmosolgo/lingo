@@ -9,21 +9,28 @@ SIXES_SEVENS_EIGHTS = Lingo::OrderedChoice.new(SIXES_TERMINAL, SEVENS_EIGHTS)
 describe "Lingo::OrderedChoice" do
   describe "#matches?" do
     it "tries to match the first one, then falls back to the second" do
-      SIXES_SEVENS_EIGHTS.matches?("66888").should eq(true)
-      SIXES_SEVENS_EIGHTS.matches?("77888").should eq(true)
-      SIXES_SEVENS_EIGHTS.matches?("888").should eq(true)
+      digit = math_parser.digit
+      plus = math_parser.plus
+      d_or_p = digit | plus
+      d_or_p.matches?("00+").should eq(true)
+      d_or_p.matches?("+1").should eq(true)
+      d_or_p.matches?("99").should eq(false)
     end
   end
 
   describe "#parse" do
     it "applies the first successful parse" do
-      six_result = SIXES_SEVENS_EIGHTS.parse("66888") as Lingo::Terminal::ParseResult
-      six_result.match.should eq("66")
-      six_result.string.should eq("888")
+      digit = math_parser.digit
+      plus = math_parser.plus
+      d_or_p = digit | plus
 
-      eight_result = SIXES_SEVENS_EIGHTS.parse("88668") as Lingo::Terminal::ParseResult
-      eight_result.match.should eq("88")
-      eight_result.string.should eq("668")
+      result = d_or_p.parse("+1")
+      result.value.should eq("+")
+      result.remainder.should eq("1")
+
+      result = d_or_p.parse("1+1")
+      result.value.should eq("1")
+      result.remainder.should eq("+1")
     end
   end
 end

@@ -6,25 +6,21 @@ class Lingo::Sequence
   end
 
   def matches?(raw_input)
-    if @first.matches?(raw_input)
-      remainder = @first.parse(raw_input)
-      if remainder.is_a?(Lingo::Terminal::ParseResult)
-        @second.matches?(remainder.string)
-      else
-        false
-      end
+    remainder = @first.parse?(raw_input)
+    if remainder.is_a?(Lingo::Match)
+      @second.matches?(remainder.remainder)
     else
       false
     end
   end
 
-  def parse(raw_input)
+  def parse?(raw_input)
     if matches?(raw_input)
-      first_result = @first.parse(raw_input) as Lingo::Terminal::ParseResult
-      second_result = @second.parse(first_result.string) as Lingo::Terminal::ParseResult
-      result = Lingo::Terminal::ParseResult.new(
-        match: first_result.match + second_result.match,
-        string: second_result.string,
+      first_result = @first.parse(raw_input)
+      second_result = @second.parse(first_result.remainder)
+      result = Lingo::Token.new(
+        value: first_result.value + second_result.value,
+        remainder: second_result.remainder,
         name: name
       )
     end

@@ -1,13 +1,19 @@
 class Lingo::Parser
+  def initialize
+    @rules = {} of Symbol => Lingo::Rule
+  end
+
   macro str(match)
     Lingo::Terminal.new({{match}})
   end
 
   macro rule(name, &block)
     def {{name.id}}
-      rule = {{block.body}}
-      rule.name = {{name}}
-      rule
+      @rules[{{name}}] ||= begin
+        rule = {{block.body}}
+        rule.name = {{name}}
+        rule
+      end
     end
   end
 

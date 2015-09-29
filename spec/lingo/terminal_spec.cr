@@ -27,11 +27,11 @@ describe "Lingo::Terminal" do
     describe "#parse" do
       it "returns a node and the remainder string" do
         rule = alpha_rule
-        result = rule.parse("alphabet") as Lingo::Terminal::ParseResult
-        result.string.should eq("bet")
-        result.match.should eq("alpha")
+        result = rule.parse("alphabet")
+        result.remainder.should eq("bet")
+        result.value.should eq("alpha")
 
-        nil_result = rule.parse("google")
+        nil_result = rule.parse?("google")
         nil_result.should eq(nil)
       end
     end
