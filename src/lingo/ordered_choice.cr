@@ -1,13 +1,6 @@
-class Lingo::OrderedChoice
-  include Lingo::Constructable
+class Lingo::OrderedChoice < Lingo::Constructable
 
-  property :name
-
-  def initialize(@first : Rule, @second : Rule)
-  end
-
-  def matches?(raw_input)
-    @first.matches?(raw_input) || @second.matches?(raw_input)
+  def initialize(@first, @second)
   end
 
   def parse?(raw_input)

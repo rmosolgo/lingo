@@ -1,25 +1,28 @@
 class Lingo::Parser
   def initialize
-    @rules = {} of Symbol => Lingo::Rule
+    @rules = {} of Symbol => Lingo::Constructable
   end
 
   macro str(match)
     Lingo::Terminal.new({{match}})
   end
 
-  macro rule(name, &block)
-    def {{name.id}}
-      @rules[{{name}}] ||= begin
+  macro rule(rule_name, &block)
+    class {{rule_name.camelcase.id}}Node < Lingo::Node
+    end
+
+    def {{rule_name.id}}
+      @rules[{{rule_name}}] ||= begin
         rule = {{block.body}}
-        rule.name = {{name}}
+        rule.node_constructor = {{rule_name.camelcase.id}}Node
         rule
       end
     end
   end
 
-  macro root(name)
+  macro root(rule_name)
     def parse(raw_input)
-      {{name.id}}.parse(raw_input)
+      {{rule_name.id}}.parse(raw_input)
     end
   end
 end

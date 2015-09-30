@@ -1,8 +1,8 @@
 require "./lingo/*"
 
 module Lingo
-  alias Rule = Terminal | OrderedChoice | Sequence
-  alias Match = Token
+  alias Match = Token | Node
+
   class ParseFailedException < Exception
     property :last_result
     def initialize(@last_result)

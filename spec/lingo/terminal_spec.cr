@@ -14,16 +14,6 @@ end
 
 describe "Lingo::Terminal" do
   describe "string rules" do
-    describe "#matches?" do
-      it "returns true if this rule matches the start" do
-        rule = alpha_rule
-        result = rule.matches?("alpha bravo")
-        result.should eq(true)
-        result = rule.matches?("bravo")
-        result.should eq(false)
-      end
-    end
-
     describe "#parse" do
       it "returns a node and the remainder string" do
         rule = alpha_rule

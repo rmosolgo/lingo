@@ -1,12 +1,23 @@
 class Lingo::Visitor
-  macro visit(matches, &block)
-    puts {{matches.to_a.map { |pair| "#{pair[0].id}=#{pair[1].id}" }.join(", ").id}}
-    def apply_transform({{matches.to_a.map { |pair| "#{pair[0].id}=#{pair[1].id}" }.join(", ").id}})
+  alias Handler = Lingo::Token -> Nil
 
-    end
+  macro inherited
+    @@handlers = {} of Symbol => Handler
+  end
+
+  macro visit(name, &block)
+    %handler = -> ({{block.args.first.id}} : Lingo::Token ) {
+      {{block.body}}
+    }
+
+
+    @@handlers[{{name}}] = Handler.new { |token|
+      %handler.call(token)
+      nil
+    }
   end
 
   def visit(parse_result)
-
+    puts parse_result
   end
 end

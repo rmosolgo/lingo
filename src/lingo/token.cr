@@ -1,6 +1,6 @@
 class Lingo::Token
-  getter :value, :remainder, :name
+  getter :value, :remainder
 
-  def initialize(@value="", @remainder="", @name=:__anon__)
+  def initialize(@value="", @remainder="")
   end
 end
