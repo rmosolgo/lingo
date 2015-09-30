@@ -9,6 +9,9 @@ class Lingo::Parser
 
   macro rule(rule_name, &block)
     class {{rule_name.camelcase.id}}Node < Lingo::Node
+      def rule_name
+        {{rule_name}}
+      end
     end
 
     def {{rule_name.id}}

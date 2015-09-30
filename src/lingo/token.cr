@@ -3,4 +3,8 @@ class Lingo::Token
 
   def initialize(@value="", @remainder="")
   end
+
+  def rule_name
+    :token
+  end
 end

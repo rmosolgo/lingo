@@ -9,4 +9,8 @@ class Lingo::Node
   def remainder
     @match.remainder
   end
+
+  def rule_name
+    :node
+  end
 end
