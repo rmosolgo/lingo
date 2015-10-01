@@ -8,7 +8,9 @@ class Lingo::Terminal < Lingo::Constructable
     if raw_input.starts_with?(search)
       new_string = raw_input[search.size..-1]
       match = search
-      Lingo::Token.new(value: match, remainder: new_string)
+      node = node_constructor.new(value: match, remainder: new_string)
+      node.name = @name
+      node
     else
       nil
     end

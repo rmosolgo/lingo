@@ -1,23 +1,41 @@
 class Lingo::Sequence < Lingo::Constructable
+  getter :parts
 
-  def initialize(@first, @second)
+  def initialize(first, second)
+    new_parts = [] of Lingo::Constructable
+    [first, second].each do |input|
+      if input.is_a?(Lingo::Sequence)
+        new_parts += input.parts
+      else
+        new_parts << input
+      end
+    end
+    @parts = new_parts
   end
 
   def parse?(raw_input)
-    result = nil
+    results = [] of Lingo::Node
+    input_string = raw_input
 
-    first_result = @first.parse?(raw_input)
-
-    if first_result.is_a?(Lingo::Match)
-      second_result = @second.parse?(first_result.remainder)
-      if second_result.is_a?(Lingo::Match)
-        result = Lingo::Token.new(
-          value: first_result.value + second_result.value,
-          remainder: second_result.remainder,
-        )
+    parts.each do |matcher|
+      next_match = matcher.parse?(input_string)
+      if next_match.is_a?(Lingo::Node)
+        results << next_match
+        input_string = next_match.remainder
+      else
+        break
       end
     end
 
-    result
+    if parts.size == results.size
+      node = node_constructor.new(
+        remainder: input_string,
+        children: results
+      )
+      node.name = @name
+      node
+    else
+      nil
+    end
   end
 end

@@ -1,11 +1,11 @@
 # Lingo
 
-A parser generator for Crystal.
+A parser generator for Crystal, inspired by Parslet.
 
 ## TODO
 
-- Build a tree of named results
-- Implement a visitor to transform results
+- [ ] Build a tree of named results
+- [ ] Implement a visitor to transform results
 - [ ] not-predicate (!)
 - [ ] and-predicate (&)
 - [ ] repeat (+, *)

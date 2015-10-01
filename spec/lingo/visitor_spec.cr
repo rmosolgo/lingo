@@ -6,7 +6,7 @@ describe "Lingo::Visitor" do
       visitor = Math::Visitor.new
       parser = math_parser
       parse_result = parser.parse("1+1")
-      result = visitor.visit(parse_result)
+      result = visitor.visit_node(parse_result)
       result.should eq(2)
     end
   end

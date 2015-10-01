@@ -12,7 +12,7 @@ describe "Lingo::Parser" do
   describe "#parse" do
     it "returns named results" do
       result = math_parser.parse("1+1")
-      result.value.should eq("1+1")
+      result.children.size.should eq(3)
       result.rule_name.should eq(:expression)
     end
   end

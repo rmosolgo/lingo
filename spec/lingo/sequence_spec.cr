@@ -15,7 +15,10 @@ describe "Lingo::Sequence" do
   end
 
   describe "#parse" do
-    pending "returns something meaningful" do
+    it "returns children in the sequence" do
+      expression = math_parser.expression
+      result = expression.parse("1+1")
+      result.children.size.should eq(3)
     end
   end
 end

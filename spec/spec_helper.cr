@@ -19,4 +19,9 @@ module Math
     rule(:plus) { str("+") }
     rule(:digit) { str("0") | str("1") }
   end
+
+  class Visitor < Lingo::Visitor
+    visit(:digit) { puts "Digit" }
+    visit(:plus)  { puts "Plus" }
+  end
 end

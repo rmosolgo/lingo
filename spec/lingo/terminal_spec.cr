@@ -20,6 +20,7 @@ describe "Lingo::Terminal" do
         result = rule.parse("alphabet")
         result.remainder.should eq("bet")
         result.value.should eq("alpha")
+        p result
 
         nil_result = rule.parse?("google")
         nil_result.should eq(nil)
