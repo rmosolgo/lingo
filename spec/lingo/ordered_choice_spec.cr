@@ -26,11 +26,9 @@ describe "Lingo::OrderedChoice" do
 
       result = d_or_p.parse("+1")
       result.value.should eq("+")
-      result.remainder.should eq("1")
 
       result = d_or_p.parse("1+1")
       result.value.should eq("1")
-      result.remainder.should eq("+1")
     end
   end
 end

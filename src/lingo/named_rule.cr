@@ -4,8 +4,8 @@ class Lingo::NamedRule < Lingo::Constructable
   def initialize(@inner)
   end
 
-  def parse?(raw_input)
-    node = @inner.parse?(raw_input)
+  def parse?(context : Lingo::Context)
+    node = @inner.parse?(context)
     if node.is_a?(Lingo::Node)
       new_node = node.chain(node_constructor)
       new_node.name = @name

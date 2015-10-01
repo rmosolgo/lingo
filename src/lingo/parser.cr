@@ -27,7 +27,8 @@ class Lingo::Parser
 
   macro root(rule_name)
     def parse(raw_input)
-      {{rule_name.id}}.parse(raw_input)
+      context = Lingo::Context.new(raw_input)
+      {{rule_name.id}}.parse(context)
     end
   end
 end

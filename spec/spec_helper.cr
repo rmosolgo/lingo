@@ -36,7 +36,6 @@ module Math
       right = VALUE_STACK.pop
       left = VALUE_STACK.pop
       op = OPERATION_STACK.pop
-      puts [op, left, right]
       return_value = op.call(left, right)
       VALUE_STACK << return_value
     }

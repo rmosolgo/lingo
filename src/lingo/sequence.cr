@@ -13,15 +13,13 @@ class Lingo::Sequence < Lingo::Constructable
     @parts = new_parts
   end
 
-  def parse?(raw_input)
+  def parse?(context : Lingo::Context)
     results = [] of Lingo::Node
-    input_string = raw_input
 
     parts.each do |matcher|
-      next_match = matcher.parse?(input_string)
+      next_match = matcher.parse?(context)
       if next_match.is_a?(Lingo::Node)
         results << next_match
-        input_string = next_match.remainder
       else
         break
       end
@@ -29,7 +27,6 @@ class Lingo::Sequence < Lingo::Constructable
 
     if parts.size == results.size
       node = node_constructor.new(
-        remainder: input_string,
         children: results
       )
       node.name = @name

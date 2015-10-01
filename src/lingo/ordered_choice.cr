@@ -2,8 +2,8 @@ class Lingo::OrderedChoice < Lingo::Constructable
   def initialize(@first, @second)
   end
 
-  def parse?(raw_input)
-    result = @first.parse?(raw_input) || @second.parse?(raw_input)
+  def parse?(context : Lingo::Context)
+    result = @first.parse?(context) || @second.parse?(context)
     if result.is_a?(Lingo::Node)
       new_result = result.chain(node_constructor)
       new_result.name = @name

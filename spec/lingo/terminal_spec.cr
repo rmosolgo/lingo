@@ -18,9 +18,7 @@ describe "Lingo::Terminal" do
       it "returns a node and the remainder string" do
         rule = alpha_rule
         result = rule.parse("alphabet")
-        result.remainder.should eq("bet")
         result.value.should eq("alpha")
-        p result
 
         nil_result = rule.parse?("google")
         nil_result.should eq(nil)

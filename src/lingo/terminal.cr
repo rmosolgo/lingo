@@ -4,11 +4,11 @@ class Lingo::Terminal < Lingo::Constructable
   def initialize(@search : String)
   end
 
-  def parse?(raw_input)
+  def parse?(context : Lingo::Context)
+    raw_input = context.remainder
     if raw_input.starts_with?(search)
-      new_string = raw_input[search.size..-1]
-      match = search
-      node = node_constructor.new(value: match, remainder: new_string)
+      context.remainder = raw_input[search.size..-1]
+      node = node_constructor.new(value: search)
       node.name = @name
       node
     else

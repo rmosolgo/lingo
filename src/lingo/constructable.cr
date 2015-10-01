@@ -5,16 +5,27 @@ abstract class Lingo::Constructable
   end
   property :node_constructor
 
-  abstract def parse?(raw_input: Lingo::Node)
+  abstract def parse?(context : Lingo::Context)
 
   @node_constructor = Lingo::Node
   @name = :anon
+
   def parse(raw_input : String)
-    res = parse?(raw_input)
+    context = Lingo::Context.new(raw_input)
+    parse(context)
+  end
+
+  def parse?(raw_input : String)
+    context = Lingo::Context.new(raw_input)
+    parse?(context)
+  end
+
+  def parse(context : Lingo::Context)
+    res = parse?(context)
     if res.is_a?(Lingo::Node)
       res
     else
-      raise ParseFailedException.new(raw_input)
+      raise ParseFailedException.new(context.remainder)
     end
   end
 
@@ -28,6 +39,10 @@ abstract class Lingo::Constructable
 
   def >>(other : Lingo::Constructable)
     Lingo::Sequence.new(self, other)
+  end
+
+  def maybe
+    Lingo::Optional.new(self)
   end
 
   def as(name)

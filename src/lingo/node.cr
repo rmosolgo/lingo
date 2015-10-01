@@ -1,8 +1,8 @@
 class Lingo::Node
-  getter :value, :remainder, :children
+  getter :value, :children
   property :name
 
-  def initialize(@value="", @remainder="", @children=[] of Lingo::Node)
+  def initialize(@value="", @children=[] of Lingo::Node)
   end
 
   def rule_name
@@ -10,10 +10,10 @@ class Lingo::Node
   end
 
   def to_s
-    "<#{self.class.name} value='#{value}' remainder='#{remainder}' children=(#{children.size})>"
+    "<#{self.class.name} value='#{value}' children=(#{children.size})>"
   end
 
   def chain(constructor)
-    constructor.new(value: @value, remainder: @remainder, children: [self])
+    constructor.new(value: @value, children: [self])
   end
 end
