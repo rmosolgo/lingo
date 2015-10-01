@@ -7,7 +7,13 @@ describe "Lingo::Visitor" do
       parser = math_parser
       parse_result = parser.parse("1+1")
       result = visitor.visit_node(parse_result)
-      result.should eq(2)
+      return_value = Math::VALUE_STACK.pop
+      return_value.should eq(2)
+
+      parse_result = parser.parse("5*3")
+      result = visitor.visit_node(parse_result)
+      return_value = Math::VALUE_STACK.pop
+      return_value.should eq(15)
     end
   end
 end

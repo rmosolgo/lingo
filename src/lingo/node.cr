@@ -12,4 +12,8 @@ class Lingo::Node
   def to_s
     "<#{self.class.name} value='#{value}' remainder='#{remainder}' children=(#{children.size})>"
   end
+
+  def chain(constructor)
+    constructor.new(value: @value, remainder: @remainder, children: [self])
+  end
 end

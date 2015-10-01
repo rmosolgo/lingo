@@ -18,7 +18,9 @@ class Lingo::Parser
       @rules[{{rule_name}}] ||= begin
         rule = {{block.body}}
         rule.node_constructor = {{rule_name.camelcase.id}}Node
-        rule
+        named_rule = Lingo::NamedRule.new(rule)
+        named_rule.as({{rule_name}})
+        named_rule
       end
     end
   end
