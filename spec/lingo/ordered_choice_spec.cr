@@ -24,11 +24,11 @@ describe "Lingo::OrderedChoice" do
       plus = math_parser.plus
       d_or_p = (digit | plus).as(:d_or_p)
 
-      result = d_or_p.parse("+1")
-      result.value.should eq("+")
+      result = d_or_p.parse("+")
+      result.full_value.should eq("+")
 
-      result = d_or_p.parse("1+1")
-      result.value.should eq("1")
+      result = d_or_p.parse("1")
+      result.full_value.should eq("1")
     end
   end
 end

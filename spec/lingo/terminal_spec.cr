@@ -15,9 +15,9 @@ end
 describe "Lingo::Terminal" do
   describe "string rules" do
     describe "#parse" do
-      it "returns a node and the remainder string" do
+      it "returns a node" do
         rule = alpha_rule
-        result = rule.parse("alphabet")
+        result = rule.parse("alpha")
         result.value.should eq("alpha")
 
         fail_result = rule.parse?("google")

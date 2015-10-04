@@ -4,7 +4,7 @@ class Lingo::OrderedChoice < Lingo::Rule
   alias Choices = Array(Lingo::Rule)
   getter :choices
 
-  def initialize(incoming_choices=Choices.new, @name=nil)
+  def initialize(incoming_choices=Choices.new)
     new_choices = Choices.new
     incoming_choices.each do |incoming_choice|
       if incoming_choice.responds_to?(:choices)
@@ -25,17 +25,10 @@ class Lingo::OrderedChoice < Lingo::Rule
     end
     next_result = next_context.root
     if next_result.is_a?(Lingo::Node)
-      if @name
-        next_result.name = @name
-      end
       context.join(next_context)
       true
     else
       false
     end
-  end
-
-  def as(name)
-    self.class.new(@choices, name: name)
   end
 end

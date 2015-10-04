@@ -4,11 +4,8 @@ abstract class Lingo::Rule
   property :node_constructor
 
   abstract def parse?(context : Lingo::Context)
-  abstract def as(name)
 
   @node_constructor = Lingo::Node
-
-  getter :name
 
   def parse(raw_input : String)
     context = Lingo::Context.new(remainder: raw_input)
@@ -22,8 +19,9 @@ abstract class Lingo::Rule
 
   def parse(context : Lingo::Context)
     success = parse?(context)
+    remainder = context.remainder
     result_node = context.root
-    if success && result_node.is_a?(Lingo::Node)
+    if success && remainder == "" && result_node.is_a?(Lingo::Node)
       result_node
     else
       raise ParseFailedException.new(context.remainder)
@@ -48,5 +46,9 @@ abstract class Lingo::Rule
 
   def repeat(from=1, to=Float32::INFINITY)
     Lingo::Repeat.new(self, from: from, to: to)
+  end
+
+  def as(name)
+    Lingo::NamedRule.new(name, self)
   end
 end

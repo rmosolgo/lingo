@@ -40,29 +40,27 @@ class Lingo::Visitor
     node_name = node.name
 
     if node_name.is_a?(Symbol)
+      p "Enter: #{node_name}"
       enter_handlers = @@enter_handlers[node_name]
+      apply_handers(node, enter_handlers)
+    end
 
-      # puts "Enter #{node_name}: #{enter_handlers.size}"
-      if enter_handlers.is_a?(HandlerList)
-        enter_handlers.each do |handler|
-          handler.call(node)
-        end
-      end
+    node.children.each do |child_node|
+      visit_node(child_node)
+    end
 
-      node.children.each do |child_node|
-        visit_node(child_node)
-      end
-
+    if node_name.is_a?(Symbol)
+      p "Exit: #{node_name}"
       exit_handlers = @@exit_handlers[node_name]
-
-      # puts "Exit #{node_name}: #{exit_handlers.size}"
-      if exit_handlers.is_a?(HandlerList)
-        exit_handlers.each do |handler|
-          handler.call(node)
-        end
-      end
+      apply_handers(node, exit_handlers)
     end
 
     nil
+  end
+
+  private def apply_handers(node : Lingo::Node, handlers : HandlerList)
+    handlers.each do |handler|
+      handler.call(node)
+    end
   end
 end

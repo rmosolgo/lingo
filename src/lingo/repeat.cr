@@ -1,5 +1,5 @@
 class Lingo::Repeat < Lingo::Rule
-  def initialize(@inner, @from=0, @to=Float32::INFINITY, name=nil)
+  def initialize(@inner, @from=0, @to=Float32::INFINITY)
   end
 
   def parse?(context : Lingo::Context)
@@ -17,9 +17,5 @@ class Lingo::Repeat < Lingo::Rule
     else
       false
     end
-  end
-
-  def as(name)
-    self.class.new(@inner, name: name)
   end
 end

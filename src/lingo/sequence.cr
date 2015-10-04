@@ -5,8 +5,7 @@ class Lingo::Sequence < Lingo::Rule
   def initialize(incoming_parts=Parts.new, @name=nil)
     new_parts = Parts.new
     incoming_parts.each do |input|
-      # don't eat named sequences, they have their own thing going on
-      if input.is_a?(Lingo::Sequence) && input.name.nil?
+      if input.is_a?(Lingo::Sequence)
         new_parts += input.parts
       else
         new_parts << input
@@ -16,10 +15,8 @@ class Lingo::Sequence < Lingo::Rule
   end
 
   def parse?(context : Lingo::Context)
-    new_context = context.fork
-    sequence_parent = node_constructor.new(children: [] of Lingo::Node)
-    sequence_parent.name = @name
-    new_context.push_node(sequence_parent)
+    sequence_parent = Lingo::Node.new(children: [] of Lingo::Node, name: @name)
+    new_context = context.fork(root: sequence_parent)
 
     results = parts.map do |matcher|
       success = matcher.parse?(new_context)
@@ -35,9 +32,5 @@ class Lingo::Sequence < Lingo::Rule
     else
       false
     end
-  end
-
-  def as(name)
-    self.class.new(parts, name: name)
   end
 end
