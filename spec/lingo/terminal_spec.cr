@@ -52,4 +52,12 @@ describe "Lingo::Terminal" do
       maybe_alpha_rule.matches?("beta").should eq(true)
     end
   end
+
+  describe "#absent" do
+    it "creates a NotRule" do
+      not_alpha_rule = alpha_rule.absent
+      not_alpha_rule.matches?("alpha").should eq(false)
+      not_alpha_rule.matches?("beta").should eq(true)
+    end
+  end
 end

@@ -51,4 +51,8 @@ abstract class Lingo::Rule
   def as(name)
     Lingo::NamedRule.new(name, self)
   end
+
+  def absent
+    Lingo::NotRule.new(self)
+  end
 end
