@@ -6,12 +6,14 @@ abstract class Lingo::Rule
   property :node_constructor
 
   abstract def parse?(context : Lingo::Context)
+  abstract def as(name)
 
   @node_constructor = Lingo::Node
   @name = :anon
+  getter :name
 
   def parse(raw_input : String)
-    context = Lingo::Context.new(raw_input)
+    context = Lingo::Context.new(remainder: raw_input)
     parse(context)
   end
 
@@ -21,9 +23,10 @@ abstract class Lingo::Rule
   end
 
   def parse(context : Lingo::Context)
-    res = parse?(context)
-    if res.is_a?(Lingo::Node)
-      res
+    success = parse?(context)
+    result_node = context.root
+    if success && result_node.is_a?(Lingo::Node)
+      result_node
     else
       raise ParseFailedException.new(context.remainder)
     end
@@ -34,19 +37,14 @@ abstract class Lingo::Rule
   end
 
   def |(other : Lingo::Rule)
-    Lingo::OrderedChoice.new(self, other)
+    Lingo::OrderedChoice.new([self, other])
   end
 
   def >>(other : Lingo::Rule)
-    Lingo::Sequence.new(self, other)
+    Lingo::Sequence.new([self, other])
   end
 
   def maybe
     Lingo::Optional.new(self)
-  end
-
-  def as(name)
-    @name = name
-    self
   end
 end

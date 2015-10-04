@@ -1,7 +1,7 @@
 class Lingo::Terminal < Lingo::Rule
   getter :search
 
-  def initialize(@search : String)
+  def initialize(@search : String, @name=:anon)
   end
 
   def parse?(context : Lingo::Context)
@@ -10,9 +10,14 @@ class Lingo::Terminal < Lingo::Rule
       context.remainder = raw_input[search.size..-1]
       node = node_constructor.new(value: search)
       node.name = @name
-      node
+      context.push_node(node)
+      true
     else
-      nil
+      false
     end
+  end
+
+  def as(name)
+    self.class.new(@search, name: name)
   end
 end

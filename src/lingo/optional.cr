@@ -1,3 +1,5 @@
+require "./rule"
+
 class Lingo::Optional < Lingo::Rule
   def initialize(@inner)
   end
@@ -9,5 +11,10 @@ class Lingo::Optional < Lingo::Rule
     else
       nil
     end
+  end
+
+  def as(name)
+    puts "NOT IMPLEMENTED"
+    self.class.new(@inner)
   end
 end

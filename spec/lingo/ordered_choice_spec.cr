@@ -22,7 +22,7 @@ describe "Lingo::OrderedChoice" do
     it "applies the first successful parse" do
       digit = math_parser.digit
       plus = math_parser.plus
-      d_or_p = digit | plus
+      d_or_p = (digit | plus).as(:d_or_p)
 
       result = d_or_p.parse("+1")
       result.value.should eq("+")

@@ -1,9 +1,10 @@
 class Lingo::Sequence < Lingo::Rule
+  alias Parts = Array(Lingo::Rule)
   getter :parts
 
-  def initialize(first, second)
-    new_parts = [] of Lingo::Rule
-    [first, second].each do |input|
+  def initialize(incoming_parts=Parts.new, @name=:anon)
+    new_parts = Parts.new
+    incoming_parts.each do |input|
       if input.is_a?(Lingo::Sequence)
         new_parts += input.parts
       else
@@ -14,25 +15,28 @@ class Lingo::Sequence < Lingo::Rule
   end
 
   def parse?(context : Lingo::Context)
-    results = [] of Lingo::Node
+    new_context = context.fork
+    sequence_parent = node_constructor.new(children: [] of Lingo::Node)
+    sequence_parent.name = @name
+    new_context.push_node(sequence_parent)
 
-    parts.each do |matcher|
-      next_match = matcher.parse?(context)
-      if next_match.is_a?(Lingo::Node)
-        results << next_match
-      else
+    results = parts.map do |matcher|
+      success = matcher.parse?(new_context)
+      if !success
         break
       end
     end
 
-    if parts.size == results.size
-      node = node_constructor.new(
-        children: results
-      )
-      node.name = @name
-      node
+    # Break causes it to be nil
+    if results.is_a?(Array) && parts.size == results.size
+      context.join(new_context)
+      true
     else
-      nil
+      false
     end
+  end
+
+  def as(name)
+    self.class.new(parts, name: name)
   end
 end

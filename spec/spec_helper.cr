@@ -9,14 +9,14 @@ module Math
   alias Operand = Int32
   alias Operation = (Int32, Int32) -> Int32
   ADDITION = Operation.new { |left, right| left + right }
-  MULTIPLICATION = Operation.new { |l, r| l * r }
+  MULTIPLICATION = Operation.new { |left, right| left * right }
 
   class Parser < Lingo::Parser
     root(:expression)
     rule(:expression) { digit.as(:operand) >> operation >> digit.as(:operand) }
     rule(:operation) { plus | times }
-    rule(:plus) { str("+") }
-    rule(:times) { str("*") }
+    rule(:plus) { str("+").as(:plus) }
+    rule(:times) { str("*").as(:times) }
     rule(:digit) { str("0") | str("1") | str("3") | str("5") }
   end
 
@@ -25,7 +25,9 @@ module Math
   OPERATION_STACK = [] of Operation
 
   class Visitor < Lingo::Visitor
-    enter(:operand) { VALUE_STACK << node.value.to_i }
+    enter(:operand) {
+      VALUE_STACK << node.value.to_i
+    }
     enter(:plus)  {
       OPERATION_STACK << ADDITION
     }

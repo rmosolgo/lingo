@@ -17,17 +17,18 @@ class Lingo::Parser
     def {{rule_name.id}}
       @rules[{{rule_name}}] ||= begin
         rule = {{block.body}}
-        rule.node_constructor = {{rule_name.camelcase.id}}Node
-        named_rule = Lingo::NamedRule.new(rule)
-        named_rule.as({{rule_name}})
-        named_rule
+        rule
       end
     end
   end
 
   macro root(rule_name)
+    def root
+      @root ||= {{rule_name.id}}.as({{rule_name}})
+    end
+
     def parse(raw_input)
-      {{rule_name.id}}.parse(raw_input)
+      root.parse(raw_input)
     end
   end
 end
