@@ -6,6 +6,7 @@ class Lingo::Terminal < Lingo::Rule
 
   def parse?(context : Lingo::Context)
     raw_input = context.remainder
+
     if raw_input.starts_with?(search)
       context.remainder = raw_input[search.size..-1]
       node = node_constructor.new(value: search)

@@ -1,15 +1,13 @@
 require "./node"
 
 abstract class Lingo::Rule
-  class InputNode < Lingo::Node
-  end
   property :node_constructor
 
   abstract def parse?(context : Lingo::Context)
   abstract def as(name)
 
   @node_constructor = Lingo::Node
-  @name = :anon
+
   getter :name
 
   def parse(raw_input : String)
@@ -45,6 +43,10 @@ abstract class Lingo::Rule
   end
 
   def maybe
-    Lingo::Optional.new(self)
+    repeat(0, 1)
+  end
+
+  def repeat(from=1, to=Float32::INFINITY)
+    Lingo::Repeat.new(self, from: from, to: to)
   end
 end

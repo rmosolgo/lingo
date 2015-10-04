@@ -44,4 +44,12 @@ describe "Lingo::Terminal" do
       alphabetagamma_rule.matches?("alphabetagamma").should eq(true)
     end
   end
+
+  describe "#maybe" do
+    it "creates an repeat(0,1)" do
+      maybe_alpha_rule = alpha_rule.maybe
+      maybe_alpha_rule.matches?("alpha").should eq(true)
+      maybe_alpha_rule.matches?("beta").should eq(true)
+    end
+  end
 end

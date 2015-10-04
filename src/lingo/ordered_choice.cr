@@ -1,3 +1,5 @@
+require "./rule"
+
 class Lingo::OrderedChoice < Lingo::Rule
   alias Choices = Array(Lingo::Rule)
   getter :choices

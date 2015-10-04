@@ -13,10 +13,11 @@ module Math
 
   class Parser < Lingo::Parser
     root(:expression)
-    rule(:expression) { digit.as(:operand) >> operation >> digit.as(:operand) }
+    rule(:expression) { integer.as(:operand) >> (operation >> integer.as(:operand)).repeat }
     rule(:operation) { plus | times }
     rule(:plus) { str("+").as(:plus) }
     rule(:times) { str("*").as(:times) }
+    rule(:integer) { digit >> digit.maybe }
     rule(:digit) { str("0") | str("1") | str("3") | str("5") }
   end
 

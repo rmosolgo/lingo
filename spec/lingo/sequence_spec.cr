@@ -17,8 +17,9 @@ describe "Lingo::Sequence" do
   describe "#parse" do
     it "returns children in the sequence" do
       expression = math_parser.expression
-      result = expression.parse("1+1")
+      result = expression.parse("15+1")
       child_names = result.children.map {|c| c.name }
+      puts child_names
       result.children.size.should eq(3)
       child_names.should eq([:operand, :plus, :operand])
     end
