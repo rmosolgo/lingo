@@ -1,8 +1,8 @@
-class Lingo::Sequence < Lingo::Constructable
+class Lingo::Sequence < Lingo::Rule
   getter :parts
 
   def initialize(first, second)
-    new_parts = [] of Lingo::Constructable
+    new_parts = [] of Lingo::Rule
     [first, second].each do |input|
       if input.is_a?(Lingo::Sequence)
         new_parts += input.parts

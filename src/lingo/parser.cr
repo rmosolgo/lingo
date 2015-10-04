@@ -1,6 +1,6 @@
 class Lingo::Parser
   def initialize
-    @rules = {} of Symbol => Lingo::Constructable
+    @rules = {} of Symbol => Lingo::Rule
   end
 
   macro str(match)
@@ -27,8 +27,7 @@ class Lingo::Parser
 
   macro root(rule_name)
     def parse(raw_input)
-      context = Lingo::Context.new(raw_input)
-      {{rule_name.id}}.parse(context)
+      {{rule_name.id}}.parse(raw_input)
     end
   end
 end

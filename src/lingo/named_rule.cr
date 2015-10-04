@@ -1,4 +1,6 @@
-class Lingo::NamedRule < Lingo::Constructable
+require "./rule"
+
+class Lingo::NamedRule < Lingo::Rule
   getter :inner
 
   def initialize(@inner)

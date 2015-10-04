@@ -1,9 +1,9 @@
-class Lingo::Optional < Lingo::Constructable
+class Lingo::Optional < Lingo::Rule
   def initialize(@inner)
   end
 
-  def parse?(raw_input)
-    res = @inner.parse?(raw_input)
+  def parse?(context)
+    res = @inner.parse?(context)
     if res.is_a?(Lingo::Node)
       res
     else

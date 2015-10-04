@@ -4,8 +4,8 @@ A parser generator for Crystal, inspired by Parslet.
 
 ## TODO
 
-- [ ] Build a tree of named results
-- [ ] Implement a visitor to transform results
+- [ ] `parse?` consumes string & pushes nodes as it sees fit, returns True/False for whether it was a success
+ - `Context#add_child` adds a child if there's a current node, otherwise no-op
 - [ ] not-predicate (!)
 - [ ] and-predicate (&)
 - [ ] repeat (+, *)

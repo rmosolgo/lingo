@@ -1,4 +1,4 @@
-class Lingo::OrderedChoice < Lingo::Constructable
+class Lingo::OrderedChoice < Lingo::Rule
   def initialize(@first, @second)
   end
 

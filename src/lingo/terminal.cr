@@ -1,4 +1,4 @@
-class Lingo::Terminal < Lingo::Constructable
+class Lingo::Terminal < Lingo::Rule
   getter :search
 
   def initialize(@search : String)

@@ -1,6 +1,6 @@
 require "./node"
 
-abstract class Lingo::Constructable
+abstract class Lingo::Rule
   class InputNode < Lingo::Node
   end
   property :node_constructor
@@ -33,11 +33,11 @@ abstract class Lingo::Constructable
     !!parse?(raw_input)
   end
 
-  def |(other : Lingo::Constructable)
+  def |(other : Lingo::Rule)
     Lingo::OrderedChoice.new(self, other)
   end
 
-  def >>(other : Lingo::Constructable)
+  def >>(other : Lingo::Rule)
     Lingo::Sequence.new(self, other)
   end
 
