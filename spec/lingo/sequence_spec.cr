@@ -1,7 +1,7 @@
 require "../spec_helper"
 
 integer = Math.parser.integer
-operator = Math.parser.binary_operator
+operator = Math.parser.operator
 binary_expression = integer.as(:operand) >> operator >> integer.as(:operand)
 
 describe "Lingo::Sequence" do

@@ -11,7 +11,7 @@ describe "Lingo::Parser" do
 
   describe "#parse" do
     it "returns named results" do
-      result = Math.parser.parse("1+1")
+      result = Math.parser.parse("1+1+3")
       result.name.should eq(:expression)
     end
   end

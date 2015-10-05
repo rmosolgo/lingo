@@ -1,5 +1,6 @@
 require "spec"
 require "../src/lingo"
+require "../examples/slow_json"
 
 def math_parser
   Math.parser
@@ -21,24 +22,18 @@ module Math
   end
 
   alias Operand = Int32
-  alias UnaryOperation = (Int32) -> Int32
   alias BinaryOperation = (Int32, Int32) -> Int32
-  alias Operation = UnaryOperation | BinaryOperation
-  POSITIVE = UnaryOperation.new { |right| right }
-  NEGATIVE = UnaryOperation.new { |right| 0 - right }
-
   ADDITION = BinaryOperation.new { |left, right| left + right }
   MULTIPLICATION = BinaryOperation.new { |left, right| left * right }
+  VALUE_STACK = [] of Operand
+  OPERATION_STACK = [] of BinaryOperation
 
   class Parser < Lingo::Parser
     root(:expression)
-    rule(:expression) { binary_operation.as(:binary) }
-    rule(:binary_operation) {
-      integer.as(:operand) >>
-      binary_operator >>
-      integer.as(:operand)
+    rule(:expression) {
+      integer.as(:operand) >> (operator >> integer.as(:operand)).repeat(0)
     }
-    rule(:binary_operator) { plus.as(:plus) | times.as(:times) }
+    rule(:operator) { plus.as(:plus) | times.as(:times) }
 
     rule(:sign) { plus.as(:positive) | minus.as(:negative) }
 
@@ -50,47 +45,23 @@ module Math
     rule(:digit) { str("0") | str("1") | str("3") | str("5") }
   end
 
-
-  VALUE_STACK = [] of Operand
-  OPERATION_STACK = [] of Operation
-
   class Visitor < Lingo::Visitor
     enter(:operand) {
-      puts "operand: #{node.full_value}"
       VALUE_STACK << node.full_value.to_i
     }
     enter(:plus)  {
-      puts "op: +"
       OPERATION_STACK << ADDITION
     }
     enter(:times)  {
-      puts "op: *"
       OPERATION_STACK << MULTIPLICATION
     }
 
-    exit(:binary) {
+    exit(:expression) {
       op = OPERATION_STACK.pop
-      puts "Pop: #{op}"
-      if op.is_a?(BinaryOperation)
-        right = VALUE_STACK.pop
-        left = VALUE_STACK.pop
-        return_value = op.call(left, right)
-        VALUE_STACK << return_value
-      else
-        raise("Not a binary operation")
-      end
-    }
-
-    exit(:unary) {
-      op = OPERATION_STACK.pop
-      puts "Pop: #{op}"
-      if op.is_a?(UnaryOperation)
-        right = VALUE_STACK.pop
-        return_value = op.call(right)
-        VALUE_STACK << return_value
-      else
-        raise("Not a unary operation")
-      end
+      right = VALUE_STACK.pop
+      left = VALUE_STACK.pop
+      return_value = op.call(left, right)
+      VALUE_STACK << return_value
     }
   end
 

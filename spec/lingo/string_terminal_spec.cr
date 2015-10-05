@@ -1,18 +1,18 @@
 require "../spec_helper"
 
 def alpha_rule
-  Lingo::Terminal.new("alpha")
+  Lingo::StringTerminal.new("alpha")
 end
 
 def beta_rule
-  Lingo::Terminal.new("beta")
+  Lingo::StringTerminal.new("beta")
 end
 
 def gamma_rule
-  Lingo::Terminal.new("gamma")
+  Lingo::StringTerminal.new("gamma")
 end
 
-describe "Lingo::Terminal" do
+describe "Lingo::StringTerminal" do
   describe "string rules" do
     describe "#parse" do
       it "returns a node" do

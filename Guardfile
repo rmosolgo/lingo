@@ -1,19 +1,13 @@
-guard :shell do
-  watch %r{src/(.*)\.cr} do |m|
-    cmd = "crystal spec spec/#{m[1]}_spec.cr"
-    puts cmd
-    `#{cmd}`
-  end
+def run_specs_for(file_prefix)
+  cmd = "crystal spec spec/#{file_prefix}_spec.cr"
+  puts cmd
+  `#{cmd}`
+end
 
-  watch %r{spec/(.*)\.cr} do |m|
-    file_name = m[1]
-    if file_name == "spec_helper"
-      spec_path = ""
-    else
-      spec_path = "#{m[1]}.cr"
-    end
-    cmd = "crystal spec spec/#{spec_path}"
-    puts cmd
-    `#{cmd}`
-  end
+guard :shell do
+  watch(%r{src/(.*)\.cr}) { |m| run_specs_for(m[1]) }
+  watch(%r{examples/(.*)\.cr})  { |m| run_specs_for("examples/" + m[1]) }
+
+  watch(%r{spec/(.*)_spec\.cr}) { |m| run_specs_for(m[1]) }
+  watch(%r{spec/spec_helper\.cr}) { |m| `crystal spec` }
 end

@@ -1,7 +1,8 @@
-class Lingo::Terminal < Lingo::Rule
+class Lingo::StringTerminal < Lingo::Rule
   getter :search
 
-  def initialize(@search : String, @name=nil)
+  def initialize(search : String | Char)
+    @search = search.to_s
   end
 
   def parse?(context : Lingo::Context)

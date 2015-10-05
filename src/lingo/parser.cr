@@ -23,7 +23,11 @@ class Lingo::Parser
   end
 
   macro str(match)
-    Lingo::Terminal.new({{match}})
+    Lingo::StringTerminal.new({{match}})
+  end
+
+  macro match(patt)
+    Lingo::PatternTerminal.new({{patt}})
   end
 
   macro rule(rule_name, &block)

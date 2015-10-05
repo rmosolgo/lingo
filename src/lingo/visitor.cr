@@ -40,7 +40,7 @@ class Lingo::Visitor
     node_name = node.name
 
     if node_name.is_a?(Symbol)
-      p "Enter: #{node_name}"
+      p "Enter: #{node_name} : #{node.full_value}"
       enter_handlers = @@enter_handlers[node_name]
       apply_handers(node, enter_handlers)
     end
@@ -50,7 +50,7 @@ class Lingo::Visitor
     end
 
     if node_name.is_a?(Symbol)
-      p "Exit: #{node_name}"
+      p "Exit: #{node_name} : #{node.full_value}"
       exit_handlers = @@exit_handlers[node_name]
       apply_handers(node, exit_handlers)
     end

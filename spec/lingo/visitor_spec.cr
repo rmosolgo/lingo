@@ -9,7 +9,6 @@ describe "Lingo::Visitor" do
       parse_result = Math.parser.parse("5*3")
       result = Math.visitor.visit_node(parse_result)
       return_value = Math::VALUE_STACK.pop
-      puts Math::VALUE_STACK
       return_value.should eq(15)
     end
   end
