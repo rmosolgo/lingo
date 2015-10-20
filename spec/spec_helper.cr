@@ -9,7 +9,7 @@ end
 module Math
   def self.eval(string_of_math)
     parse_result = @@parser.parse(string_of_math)
-    result = @@visitor.visit_node(parse_result)
+    result = @@visitor.visit(parse_result)
     return_value = Math::VALUE_STACK.pop
   end
 

@@ -36,7 +36,7 @@ class Lingo::Visitor
 
   # Depth-first visit this node & children,
   # calling handlers along the way.
-  def visit_node(node)
+  def visit(node)
     node_name = node.name
 
     if node_name.is_a?(Symbol)
@@ -46,7 +46,7 @@ class Lingo::Visitor
     end
 
     node.children.each do |child_node|
-      visit_node(child_node)
+      visit(child_node)
     end
 
     if node_name.is_a?(Symbol)

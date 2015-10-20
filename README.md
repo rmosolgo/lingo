@@ -26,11 +26,26 @@ dependencies:
 
 ## Usage
 
+Let's define a parser for CSS hex colors (eg, `#ff0000` (red), `#0945ab` (blue))
+Define the language by extending `Lingo::Parser`, then declaring your rules:
+
 ```crystal
 require "lingo"
+
+module HexColors
+  class Parser < Lingo::Parser
+    # `color` will be the "main" rule for this parser.
+    # All input is expected to be a color.
+    root(:color)
+
+    rule(:color) { hash >> octet.as(:red) >> hex.as(:)}
 ```
 
 
+## Development
+
+- Run the __tests__ with `crystal spec`
+- Install Ruby & `guard`, then start a __watcher__ with `guard`
 
 ## How slow is it?
 

@@ -3,7 +3,7 @@ require "../src/lingo"
 module SlowJSON
   def self.parse(input_string)
     parse_result = @@parser.parse(input_string)
-    @@visitor.visit_node(parse_result)
+    @@visitor.visit(parse_result)
     VALUE_STACK.pop
   end
 
@@ -51,7 +51,7 @@ module SlowJSON
     rule(:value_null) { str("null").as(:null) }
 
     rule(:digits) { match(/[0-9]+/) }
-    rule(:space?) { match(/\s*/) }
+    rule(:space?) { match(/\s+/).maybe }
   end
 
   alias JSONKey = String

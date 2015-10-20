@@ -4,7 +4,7 @@ module HexColors
   def self.parse(color_string)
     tree = Parser.new.parse(color_string)
     visitor = Visitor.new
-    visitor.visit_node(tree)
+    visitor.visit(tree)
     COLOR_STACK.pop
   end
 
