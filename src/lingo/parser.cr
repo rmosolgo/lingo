@@ -19,7 +19,7 @@ class Lingo::Parser
   end
 
   def initialize
-    @rules = {} of Symbol => LazyRule
+    @rules = {} of Symbol => Lingo::Rule
   end
 
   macro str(match)
@@ -44,5 +44,9 @@ class Lingo::Parser
     def parse(raw_input)
       root.parse(raw_input)
     end
+  end
+
+  def any
+    @rules[:any] ||= match(/./)
   end
 end
