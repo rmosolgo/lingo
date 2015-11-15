@@ -51,9 +51,9 @@ See examples in `/examples`.
 Let's compare the built-in JSON parser to a Lingo JSON parser:
 
 ```
-$ crystal run --release slow_json.cr
-Stdlib JSON 103.63k (± 5.48%)        fastest
-Lingo::JSON 427.72  (±13.50%) 242.29× slower
+./lingo/benchmark $ crystal run --release slow_json.cr
+Stdlib JSON 117.74k (± 7.91%)        fastest
+Lingo::JSON 751.17  (± 5.17%) 156.75× slower
 ```
 
 Ouch, that's __a lot slower__.
