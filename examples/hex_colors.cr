@@ -5,7 +5,7 @@ module HexColors
     tree = Parser.new.parse(color_string)
     visitor = Visitor.new
     visitor.visit(tree)
-    COLOR_STACK.pop
+    visitor.color
   end
 
   class Color
@@ -24,22 +24,20 @@ module HexColors
     rule(:octet) { match(/[0-9A-f]{2}/i)}
   end
 
-  COLOR_STACK = [] of Color
+
   class Visitor < Lingo::Visitor
     getter :color
-
-    enter(:color) {
-      COLOR_STACK << Color.new
-    }
-
+    def initialize
+      @color = Color.new
+    end
     enter(:red) {
-      COLOR_STACK[0].red = node.full_value.upcase
+      visitor.color.red = node.full_value.upcase
     }
     enter(:blue) {
-      COLOR_STACK[0].blue = node.full_value.upcase
+      visitor.color.blue = node.full_value.upcase
     }
     enter(:green) {
-      COLOR_STACK[0].green = node.full_value.upcase
+      visitor.color.green = node.full_value.upcase
     }
   end
 end

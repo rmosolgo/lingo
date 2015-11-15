@@ -3,8 +3,9 @@ require "../src/lingo"
 module SlowJSON
   def self.parse(input_string)
     parse_result = @@parser.parse(input_string)
-    @@visitor.visit(parse_result)
-    VALUE_STACK.pop
+    visitor = JSONVisitor.new
+    visitor.visit(parse_result)
+    visitor.values.pop
   end
 
   class Parser < Lingo::Parser
@@ -58,25 +59,29 @@ module SlowJSON
   alias JSONValue = Hash(JSONKey, JSONValue) | Array(JSONValue) | Nil | Int32 | Float64 | String | Bool
   alias JSONArray = Array(JSONValue)
   alias JSONResult = Hash(JSONKey, JSONValue)
-  OBJECT_STACK = [] of JSONResult | JSONArray
-  KEY_STACK = [] of JSONKey
-  VALUE_STACK = [] of JSONValue
 
-  class Visitor < Lingo::Visitor
+  class JSONVisitor < Lingo::Visitor
+    getter :objects, :keys, :values
+    def initialize
+      @objects = [] of JSONResult | JSONArray
+      @keys = [] of JSONKey
+      @values = [] of JSONValue
+    end
+
     exit(:key) {
-      string = VALUE_STACK.pop
+      string = visitor.values.pop
       if string.is_a?(JSONKey)
-        KEY_STACK.push(string)
+        visitor.keys.push(string)
       else
         raise("Invalid JSON Key: #{string}")
       end
     }
 
     exit(:value) {
-      value = VALUE_STACK.pop
-      current_object = OBJECT_STACK.last
+      value = visitor.values.pop
+      current_object = visitor.objects.last
       if current_object.is_a?(JSONResult)
-        key = KEY_STACK.pop
+        key = visitor.keys.pop
         current_object[key] = value
       elsif current_object.is_a?(JSONArray)
         current_object << value
@@ -86,33 +91,32 @@ module SlowJSON
     }
 
     exit(:object) {
-      OBJECT_STACK.pop
+      visitor.objects.pop
     }
 
     exit(:array) {
-      OBJECT_STACK.pop
+      visitor.objects.pop
     }
 
     enter(:object) {
       new_obj = JSONResult.new
-      OBJECT_STACK << new_obj
-      VALUE_STACK << new_obj
+      visitor.objects << new_obj
+      visitor.values << new_obj
     }
 
     enter(:array) {
       new_array = JSONArray.new
-      OBJECT_STACK << new_array
-      VALUE_STACK << new_array
+      visitor.objects << new_array
+      visitor.values << new_array
     }
 
-    enter(:string) { VALUE_STACK << node.full_value }
-    enter(:integer) { VALUE_STACK << node.full_value.to_i }
-    enter(:float) { VALUE_STACK << node.full_value.to_f }
-    enter(:true) { VALUE_STACK << true }
-    enter(:false) { VALUE_STACK << false }
-    enter(:null) { VALUE_STACK << nil }
+    enter(:string) { visitor.values << node.full_value }
+    enter(:integer) { visitor.values << node.full_value.to_i }
+    enter(:float) { visitor.values << node.full_value.to_f }
+    enter(:true) { visitor.values << true }
+    enter(:false) { visitor.values << false }
+    enter(:null) { visitor.values << nil }
   end
 
   @@parser = Parser.new
-  @@visitor = Visitor.new
 end

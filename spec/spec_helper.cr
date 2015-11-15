@@ -9,8 +9,9 @@ end
 module Math
   def self.eval(string_of_math)
     parse_result = @@parser.parse(string_of_math)
-    result = @@visitor.visit(parse_result)
-    return_value = Math::VALUE_STACK.pop
+    math_visitor = Math::Visitor.new
+    math_visitor.visit(parse_result)
+    math_visitor.values.pop
   end
 
   def self.parser
@@ -18,15 +19,13 @@ module Math
   end
 
   def self.visitor
-    @@visitor
+    Math::Visitor.new
   end
 
   alias Operand = Int32
   alias BinaryOperation = (Int32, Int32) -> Int32
   ADDITION = BinaryOperation.new { |left, right| left + right }
   MULTIPLICATION = BinaryOperation.new { |left, right| left * right }
-  VALUE_STACK = [] of Operand
-  OPERATION_STACK = [] of BinaryOperation
 
   class Parser < Lingo::Parser
     root(:expression)
@@ -46,25 +45,33 @@ module Math
   end
 
   class Visitor < Lingo::Visitor
+    alias ValueStack = Array(Operand)
+    alias OperationStack =  Array(BinaryOperation)
+    getter :values, :operations
+
+    def initialize
+      @values = ValueStack.new
+      @operations = OperationStack.new
+    end
+
     enter(:operand) {
-      VALUE_STACK << node.full_value.to_i
+      visitor.values << node.full_value.to_i
     }
     enter(:plus)  {
-      OPERATION_STACK << ADDITION
+      visitor.operations << ADDITION
     }
     enter(:times)  {
-      OPERATION_STACK << MULTIPLICATION
+      visitor.operations << MULTIPLICATION
     }
 
     exit(:expression) {
-      op = OPERATION_STACK.pop
-      right = VALUE_STACK.pop
-      left = VALUE_STACK.pop
+      op = visitor.operations.pop
+      right = visitor.values.pop
+      left = visitor.values.pop
       return_value = op.call(left, right)
-      VALUE_STACK << return_value
+      visitor.values << return_value
     }
   end
 
   @@parser = Parser.new
-  @@visitor = Visitor.new
 end

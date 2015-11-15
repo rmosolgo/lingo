@@ -16,7 +16,7 @@ describe "SlowJSON" do
     expected = {
       "a" => 1,
       "b" => true,
-      "c" => false
+      "c" => false,
       "d" => nil,
       "e" => 3.321,
       "f" => {"f1" => "f2"},

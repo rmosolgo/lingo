@@ -8,12 +8,6 @@ Lingo provides text processing by:
 
 Lingo works, but I don't recommend using it because the errors are not helpful.
 
-## TODO
-
-- [ ] Add some kind of debug output
-- [ ] Add position to nodes
-- [ ] Add position & content to errors
-
 ## Installation
 
 Add this to your application's `shard.yml`:
@@ -26,28 +20,33 @@ dependencies:
 
 ## Usage
 
-Let's define a parser for CSS hex colors (eg, `#ff0000` (red), `#0945ab` (blue))
-Define the language by extending `Lingo::Parser`, then declaring your rules:
-
-```crystal
-require "lingo"
-
-module HexColors
-  class Parser < Lingo::Parser
-    # `color` will be the "main" rule for this parser.
-    # All input is expected to be a color.
-    root(:color)
-
-    rule(:color) { hash >> octet.as(:red) >> hex.as(:)}
-```
-
+See examples in `/examples`.
 
 ## Development
 
 - Run the __tests__ with `crystal spec`
 - Install Ruby & `guard`, then start a __watcher__ with `guard`
 
-## How slow is it?
+## About this Project
+
+### TODO
+
+- [ ] Add some kind of debug output
+- [ ] Add position to nodes
+- [ ] Add position & content to errors
+
+### Goals
+
+- Low barrier to entry: easy-to-learn API, short zero-to-working time
+- Easy-to-read code, therefore easy-to-modify
+- Useful errors (not accomplished)
+
+### Non-goals
+
+- Blazing-fast performance
+- Theoretical correctness
+
+### How slow is it?
 
 Let's compare the built-in JSON parser to a Lingo JSON parser:
 

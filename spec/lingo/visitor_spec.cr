@@ -7,8 +7,9 @@ describe "Lingo::Visitor" do
       return_value.should eq(-9)
 
       parse_result = Math.parser.parse("5*3")
-      result = Math.visitor.visit(parse_result)
-      return_value = Math::VALUE_STACK.pop
+      visitor = Math.visitor
+      visitor.visit(parse_result)
+      return_value = visitor.values.pop
       return_value.should eq(15)
     end
   end

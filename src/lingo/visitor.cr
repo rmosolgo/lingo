@@ -1,9 +1,7 @@
 require "./node"
 
 class Lingo::Visitor
-  alias Handler = Lingo::Node -> Nil
-  alias HandlerList = Array(Handler)
-  alias HandlerRegistry = Hash(Symbol, HandlerList)
+
 
   macro create_registry
     HandlerRegistry.new do |h, k|
@@ -13,13 +11,16 @@ class Lingo::Visitor
   end
 
   macro inherited
+    alias Handler = Lingo::Node, self -> Nil
+    alias HandlerList = Array(Handler)
+    alias HandlerRegistry = Hash(Symbol, HandlerList)
     @@enter_handlers = create_registry
     @@exit_handlers = create_registry
   end
 
 
   macro enter(rule_name, &block)
-    %handler = Handler.new { |node|
+    %handler = Handler.new { |node, visitor|
       {{block.body}}
       nil
     }
@@ -27,7 +28,7 @@ class Lingo::Visitor
   end
 
   macro exit(rule_name, &block)
-    %handler = Handler.new { |node|
+    %handler = Handler.new { |node, visitor|
       {{block.body}}
       nil
     }
@@ -37,6 +38,10 @@ class Lingo::Visitor
   # Depth-first visit this node & children,
   # calling handlers along the way.
   def visit(node)
+    apply_visitation(node)
+  end
+
+  private def apply_visitation(node)
     node_name = node.name
 
     if node_name.is_a?(Symbol)
@@ -46,7 +51,7 @@ class Lingo::Visitor
     end
 
     node.children.each do |child_node|
-      visit(child_node)
+      apply_visitation(child_node)
     end
 
     if node_name.is_a?(Symbol)
@@ -58,9 +63,9 @@ class Lingo::Visitor
     nil
   end
 
-  private def apply_handers(node : Lingo::Node, handlers : HandlerList)
+  private def apply_handers(node : Lingo::Node, handlers)
     handlers.each do |handler|
-      handler.call(node)
+      handler.call(node, self)
     end
   end
 end
