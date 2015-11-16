@@ -45,7 +45,7 @@ I-95N # Interstate 95, Northbound
 
 ### Parser
 
-The general structure is `{interstate?}{number}{direction}{business?}`. Let's express that with Lingo rules:
+The general structure is `{interstate?}{number}{direction?}{business?}`. Let's express that with Lingo rules:
 
 ```ruby
 class RoadParser < Lingo::Parser
@@ -179,8 +179,8 @@ Let's compare the built-in JSON parser to a Lingo JSON parser:
 
 ```
 ./lingo/benchmark $ crystal run --release slow_json.cr
-Stdlib JSON  126.2k (± 1.09%)        fastest
-Lingo::JSON 668.61  (± 1.36%) 188.76× slower
+Stdlib JSON 126.45k (± 1.55%)        fastest
+Lingo::JSON 660.18  (± 1.28%) 191.54× slower
 ```
 
 Ouch, that's __a lot slower__.
