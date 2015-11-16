@@ -1,8 +1,8 @@
 class Lingo::Node
-  getter :value, :children
+  getter :value, :children, :line, :column
   property :name
 
-  def initialize(@value="", @children=[] of Lingo::Node, @name=nil)
+  def initialize(@value="", @children=[] of Lingo::Node, @name=nil, @line=0, @column=0)
   end
 
   def to_s

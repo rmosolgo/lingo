@@ -9,8 +9,8 @@ class Lingo::StringTerminal < Lingo::Rule
     raw_input = context.remainder
 
     if raw_input.starts_with?(search)
+      node = Lingo::Node.new(value: search, line: context.line, column: context.column)
       context.consume(search)
-      node = Lingo::Node.new(value: search)
       context.push_node(node)
       true
     else

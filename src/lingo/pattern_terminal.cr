@@ -9,7 +9,7 @@ class Lingo::PatternTerminal < Lingo::Rule
     context.remainder.match(@pattern) do |match_data|
       success = true
       match_string = match_data[0]
-      match_node = Lingo::Node.new(value: match_string)
+      match_node = Lingo::Node.new(value: match_string, line: context.line, column: context.column)
       context.push_node(match_node)
       context.consume(match_string)
     end

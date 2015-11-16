@@ -21,8 +21,12 @@ describe "Lingo::Sequence" do
     it "returns children in the sequence" do
       result = binary_expression.parse("-15+1")
       result.children.size.should eq(3)
-      child_names = result.children.map { |c| c.name }
+      child_names = result.children.map &.name
       child_names.should eq([:operand, :plus, :operand])
+      result.line.should eq(1)
+      result.column.should eq(1)
+      child_columns = result.children.map &.column
+      child_columns.should eq([1,4,5])
     end
   end
 end

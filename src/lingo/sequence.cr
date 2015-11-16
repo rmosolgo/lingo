@@ -15,7 +15,7 @@ class Lingo::Sequence < Lingo::Rule
   end
 
   def parse?(context : Lingo::Context)
-    sequence_parent = Lingo::Node.new(children: [] of Lingo::Node, name: @name)
+    sequence_parent = Lingo::Node.new(name: @name, line: context.line, column: context.column)
     new_context = context.fork(root: sequence_parent)
 
     results = parts.map do |matcher|
