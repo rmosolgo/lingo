@@ -29,8 +29,8 @@ See examples in `/examples`.
 
 ### TODO
 
+- [ ] Add some usage notes
 - [ ] Add some kind of debug output
-- [ ] Add position to nodes
 
 ### Goals
 
@@ -49,8 +49,8 @@ Let's compare the built-in JSON parser to a Lingo JSON parser:
 
 ```
 ./lingo/benchmark $ crystal run --release slow_json.cr
-Stdlib JSON 117.74k (± 7.91%)        fastest
-Lingo::JSON 751.17  (± 5.17%) 156.75× slower
+Stdlib JSON  126.2k (± 1.09%)        fastest
+Lingo::JSON 668.61  (± 1.36%) 188.76× slower
 ```
 
 Ouch, that's __a lot slower__.
