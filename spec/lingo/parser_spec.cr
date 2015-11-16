@@ -14,5 +14,21 @@ describe "Lingo::Parser" do
       result = Math.parser.parse("1+1+3")
       result.name.should eq(:expression)
     end
+
+    describe "on errors" do
+      it "tells how far it got" do
+        expect_raises(Lingo::ParseFailedException, "at 3:15") do
+          Math.parser.parse("1
+          +
+          3 + 3%%")
+        end
+      end
+
+      it "tells the nearby string" do
+        expect_raises(Lingo::ParseFailedException, "%%%") do
+          Math.parser.parse("1+%%%")
+        end
+      end
+    end
   end
 end

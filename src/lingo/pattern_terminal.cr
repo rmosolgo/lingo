@@ -11,8 +11,7 @@ class Lingo::PatternTerminal < Lingo::Rule
       match_string = match_data[0]
       match_node = Lingo::Node.new(value: match_string)
       context.push_node(match_node)
-      new_remainder = context.remainder[match_string.size..-1]
-      context.remainder = new_remainder
+      context.consume(match_string)
     end
     success
   end

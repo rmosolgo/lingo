@@ -30,9 +30,11 @@ module Math
   class Parser < Lingo::Parser
     root(:expression)
     rule(:expression) {
-      integer.as(:operand) >> (operator >> integer.as(:operand)).repeat(0)
+      integer.as(:operand) >>
+        ws.repeat(0) >>
+        (operator >> ws.repeat(0) >>  integer.as(:operand) >> ws.repeat(0)).repeat(0)
     }
-    rule(:operator) { plus.as(:plus) | times.as(:times) }
+    rule(:operator) { (plus.as(:plus) | times.as(:times))   }
 
     rule(:sign) { plus.as(:positive) | minus.as(:negative) }
 
@@ -42,6 +44,7 @@ module Math
 
     rule(:integer) { sign.maybe >> digit.repeat }
     rule(:digit) { str("0") | str("1") | str("3") | str("5") }
+    rule(:ws) { match(/[\n\r\t\s]/) }
   end
 
   class Visitor < Lingo::Visitor

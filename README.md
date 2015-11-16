@@ -1,12 +1,10 @@
-# Lingo
+# Lingo [![Build Status](https://travis-ci.org/rmosolgo/lingo.svg)](https://travis-ci.org/rmosolgo/lingo)
 
 A parser generator for Crystal, inspired by [Parslet](https://github.com/kschiess/parslet).
 
 Lingo provides text processing by:
 - parsing the string into a tree of nodes
 - providing a visitor to allow you to work from the tree
-
-Lingo works, but I don't recommend using it because the errors are not helpful.
 
 ## Installation
 
@@ -33,7 +31,6 @@ See examples in `/examples`.
 
 - [ ] Add some kind of debug output
 - [ ] Add position to nodes
-- [ ] Add position & content to errors
 
 ### Goals
 

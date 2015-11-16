@@ -20,19 +20,17 @@ class Lingo::Visitor
 
 
   macro enter(rule_name, &block)
-    %handler = Handler.new { |node, visitor|
+    @@enter_handlers[{{rule_name}}] << Handler.new { |node, visitor|
       {{block.body}}
-      nil
+      return nil
     }
-    @@enter_handlers[{{rule_name}}] << %handler
   end
 
   macro exit(rule_name, &block)
-    %handler = Handler.new { |node, visitor|
+    @@exit_handlers[{{rule_name}}] << Handler.new { |node, visitor|
       {{block.body}}
-      nil
+      return nil
     }
-    @@exit_handlers[{{rule_name}}] << %handler
   end
 
   # Depth-first visit this node & children,

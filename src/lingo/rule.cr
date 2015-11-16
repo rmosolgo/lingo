@@ -1,11 +1,8 @@
 require "./node"
 
 abstract class Lingo::Rule
-  property :node_constructor
 
   abstract def parse?(context : Lingo::Context)
-
-  @node_constructor = Lingo::Node
 
   def parse(raw_input : String)
     context = Lingo::Context.new(remainder: raw_input)
@@ -24,7 +21,7 @@ abstract class Lingo::Rule
     if success && remainder == "" && result_node.is_a?(Lingo::Node)
       result_node
     else
-      raise ParseFailedException.new(context.remainder)
+      raise ParseFailedException.new(context)
     end
   end
 
