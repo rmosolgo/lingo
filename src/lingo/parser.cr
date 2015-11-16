@@ -1,23 +1,4 @@
 class Lingo::Parser
-  alias RuleGenerator = Proc(Lingo::Rule)
-  class LazyRule < Lingo::Rule
-    def initialize(&rule_generator : RuleGenerator)
-      @rule_generator = rule_generator
-    end
-
-    def parse?(raw_input)
-      inner_rule.parse?(raw_input)
-    end
-
-    def as(name)
-      inner_rule.as(name)
-    end
-
-    private def inner_rule
-      @inner_rule ||= @rule_generator.call
-    end
-  end
-
   def initialize
     @rules = {} of Symbol => Lingo::Rule
   end
@@ -48,5 +29,13 @@ class Lingo::Parser
 
   def any
     @rules[:any] ||= match(/./)
+  end
+
+  def self.instance
+    @@instance ||= self.new
+  end
+
+  def self.parse(input_str)
+    instance.parse(input_str)
   end
 end

@@ -1,6 +1,7 @@
 require "spec"
 require "../src/lingo"
 require "../examples/slow_json"
+require "../examples/road_names"
 
 def math_parser
   Math.parser
@@ -8,14 +9,14 @@ end
 
 module Math
   def self.eval(string_of_math)
-    parse_result = @@parser.parse(string_of_math)
+    parse_result = parser.parse(string_of_math)
     math_visitor = Math::Visitor.new
     math_visitor.visit(parse_result)
     math_visitor.values.pop
   end
 
   def self.parser
-    @@parser
+    Math::Parser.instance
   end
 
   def self.visitor
@@ -75,6 +76,4 @@ module Math
       visitor.values << return_value
     }
   end
-
-  @@parser = Parser.new
 end

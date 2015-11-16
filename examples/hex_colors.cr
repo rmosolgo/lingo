@@ -2,7 +2,7 @@ require "../src/lingo"
 
 module HexColors
   def self.parse(color_string)
-    tree = Parser.new.parse(color_string)
+    tree = Parser.parse(color_string)
     visitor = Visitor.new
     visitor.visit(tree)
     visitor.color

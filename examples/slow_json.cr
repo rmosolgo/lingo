@@ -2,13 +2,13 @@ require "../src/lingo"
 
 module SlowJSON
   def self.parse(input_string)
-    parse_result = @@parser.parse(input_string)
+    parse_result = JSONParser.parse(input_string)
     visitor = JSONVisitor.new
     visitor.visit(parse_result)
     visitor.values.pop
   end
 
-  class Parser < Lingo::Parser
+  class JSONParser < Lingo::Parser
     root(:main_object)
     rule(:main_object) { space? >> object >> space? }
 
@@ -117,6 +117,4 @@ module SlowJSON
     enter(:false) { visitor.values << false }
     enter(:null) { visitor.values << nil }
   end
-
-  @@parser = Parser.new
 end
