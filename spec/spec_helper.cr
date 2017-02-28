@@ -16,7 +16,7 @@ module Math
   end
 
   def self.parser
-    Math::Parser.instance
+    @@instance ||= Math::Parser.new
   end
 
   def self.visitor
@@ -25,19 +25,19 @@ module Math
 
   alias Operand = Int32
   alias BinaryOperation = (Int32, Int32) -> Int32
-  ADDITION = BinaryOperation.new { |left, right| left + right }
+  ADDITION       = BinaryOperation.new { |left, right| left + right }
   MULTIPLICATION = BinaryOperation.new { |left, right| left * right }
 
   class Parser < Lingo::Parser
     root(:expression)
     rule(:expression) {
-      integer.as(:operand) >>
+      integer.named(:operand) >>
         ws.repeat(0) >>
-        (operator >> ws.repeat(0) >>  integer.as(:operand) >> ws.repeat(0)).repeat(0)
+        (operator >> ws.repeat(0) >> integer.named(:operand) >> ws.repeat(0)).repeat(0)
     }
-    rule(:operator) { (plus.as(:plus) | times.as(:times))   }
+    rule(:operator) { (plus.named(:plus) | times.named(:times)) }
 
-    rule(:sign) { plus.as(:positive) | minus.as(:negative) }
+    rule(:sign) { plus.named(:positive) | minus.named(:negative) }
 
     rule(:plus) { str("+") }
     rule(:minus) { str("-") }
@@ -50,7 +50,7 @@ module Math
 
   class Visitor < Lingo::Visitor
     alias ValueStack = Array(Operand)
-    alias OperationStack =  Array(BinaryOperation)
+    alias OperationStack = Array(BinaryOperation)
     getter :values, :operations
 
     def initialize
@@ -61,10 +61,10 @@ module Math
     enter(:operand) {
       visitor.values << node.full_value.to_i
     }
-    enter(:plus)  {
+    enter(:plus) {
       visitor.operations << ADDITION
     }
-    enter(:times)  {
+    enter(:times) {
       visitor.operations << MULTIPLICATION
     }
 

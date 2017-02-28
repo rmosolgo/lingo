@@ -2,7 +2,7 @@ require "../spec_helper"
 
 integer = Math.parser.integer
 operator = Math.parser.operator
-binary_expression = integer.as(:operand) >> operator >> integer.as(:operand)
+binary_expression = integer.named(:operand) >> operator >> integer.named(:operand)
 
 describe "Lingo::Sequence" do
   describe "#matches?" do
@@ -26,7 +26,7 @@ describe "Lingo::Sequence" do
       result.line.should eq(1)
       result.column.should eq(1)
       child_columns = result.children.map &.column
-      child_columns.should eq([1,4,5])
+      child_columns.should eq([1, 4, 5])
     end
   end
 end

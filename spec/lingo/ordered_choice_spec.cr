@@ -1,9 +1,9 @@
 require "../spec_helper"
 
-SIXES_TERMINAL = Lingo::Terminal.new("66")
-SEVENS_TERMINAL = Lingo::Terminal.new("77")
-EIGHTS_TERMINAL = Lingo::Terminal.new("88")
-SEVENS_EIGHTS = Lingo::OrderedChoice.new(SEVENS_TERMINAL, EIGHTS_TERMINAL)
+SIXES_TERMINAL      = Lingo::Terminal.new("66")
+SEVENS_TERMINAL     = Lingo::Terminal.new("77")
+EIGHTS_TERMINAL     = Lingo::Terminal.new("88")
+SEVENS_EIGHTS       = Lingo::OrderedChoice.new(SEVENS_TERMINAL, EIGHTS_TERMINAL)
 SIXES_SEVENS_EIGHTS = Lingo::OrderedChoice.new(SIXES_TERMINAL, SEVENS_EIGHTS)
 
 describe "Lingo::OrderedChoice" do
@@ -22,7 +22,7 @@ describe "Lingo::OrderedChoice" do
     it "applies the first successful parse" do
       digit = math_parser.digit
       plus = math_parser.plus
-      d_or_p = (digit | plus).as(:d_or_p)
+      d_or_p = (digit | plus).named(:d_or_p)
 
       result = d_or_p.parse("+")
       result.full_value.should eq("+")

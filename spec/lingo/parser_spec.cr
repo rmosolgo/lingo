@@ -31,10 +31,4 @@ describe "Lingo::Parser" do
       end
     end
   end
-
-  describe ".instance" do
-    it "memoizes an instance" do
-      Math::Parser.instance.should eq(Math::Parser.instance)
-    end
-  end
 end

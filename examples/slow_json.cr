@@ -2,7 +2,7 @@ require "../src/lingo"
 
 module SlowJSON
   def self.parse(input_string)
-    parse_result = JSONParser.parse(input_string)
+    parse_result = JSONParser.new.parse(input_string)
     visitor = JSONVisitor.new
     visitor.visit(parse_result)
     visitor.values.pop
@@ -14,42 +14,42 @@ module SlowJSON
 
     rule(:object) {
       (str("{") >> space? >>
-      (pair >> (comma >> pair).repeat(0)).maybe >>
-      space? >> str("}")).as(:object)
+        (pair >> (comma >> pair).repeat(0)).maybe >>
+        space? >> str("}")).named(:object)
     }
 
-    rule(:comma) { space? >> str(",") >> space?}
+    rule(:comma) { space? >> str(",") >> space? }
 
-    rule(:pair) { key.as(:key) >> kv_delimiter >> value.as(:value) }
+    rule(:pair) { key.named(:key) >> kv_delimiter >> value.named(:value) }
     rule(:kv_delimiter) { space? >> str(":") >> space? }
     rule(:key) { string }
     rule(:value) {
       string | float | integer |
-      object | array |
-      value_true | value_false | value_null
+        object | array |
+        value_true | value_false | value_null
     }
 
     rule(:array) {
       (str("[") >> space? >>
-      (
-        value.as(:value) >>
-        (comma >> value.as(:value)).repeat(0)
-      ).maybe >>
-      space? >> str("]")).as(:array)
+        (
+          value.named(:value) >>
+            (comma >> value.named(:value)).repeat(0)
+        ).maybe >>
+        space? >> str("]")).named(:array)
     }
 
     rule(:string) {
       str('"') >> (
         str("\\") >> any | str('"').absent >> any
-      ).repeat.as(:string) >> str('"')
+      ).repeat.named(:string) >> str('"')
     }
 
-    rule(:integer) { digits.as(:integer) }
-    rule(:float) { (digits >> str(".") >> digits).as(:float) }
+    rule(:integer) { digits.named(:integer) }
+    rule(:float) { (digits >> str(".") >> digits).named(:float) }
 
-    rule(:value_true) { str("true").as(:true) }
-    rule(:value_false) { str("false").as(:false) }
-    rule(:value_null) { str("null").as(:null) }
+    rule(:value_true) { str("true").named(:true) }
+    rule(:value_false) { str("false").named(:false) }
+    rule(:value_null) { str("null").named(:null) }
 
     rule(:digits) { match(/[0-9]+/) }
     rule(:space?) { match(/\s+/).maybe }
@@ -62,6 +62,7 @@ module SlowJSON
 
   class JSONVisitor < Lingo::Visitor
     getter :objects, :keys, :values
+
     def initialize
       @objects = [] of JSONResult | JSONArray
       @keys = [] of JSONKey

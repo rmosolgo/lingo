@@ -1,7 +1,7 @@
 require "./rule"
 
 class Lingo::NamedRule < Lingo::Rule
-  def initialize(@name, @inner)
+  def initialize(@name : String | Symbol, @inner : Lingo::Rule)
   end
 
   def parse?(context : Lingo::Context)

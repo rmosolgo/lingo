@@ -1,7 +1,7 @@
 class Lingo::Context
   property :remainder, :current_node, :root, :column, :line
 
-  def initialize(@remainder="", @root=nil, @column=1, @line=1)
+  def initialize(@remainder = "", @root = nil.as(Lingo::Node?), @column = 1, @line = 1)
   end
 
   def push_node(parsed_node)
@@ -16,7 +16,7 @@ class Lingo::Context
     nil
   end
 
-  def fork(root=nil)
+  def fork(root = nil)
     self.class.new(remainder: remainder, root: root, column: column, line: line)
   end
 

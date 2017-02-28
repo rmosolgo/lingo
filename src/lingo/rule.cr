@@ -1,7 +1,6 @@
 require "./node"
 
 abstract class Lingo::Rule
-
   abstract def parse?(context : Lingo::Context)
 
   def parse(raw_input : String)
@@ -41,11 +40,11 @@ abstract class Lingo::Rule
     repeat(0, 1)
   end
 
-  def repeat(from=1, to=Float32::INFINITY)
+  def repeat(from = 1, to = Float32::INFINITY)
     Lingo::Repeat.new(self, from: from, to: to)
   end
 
-  def as(name)
+  def named(name)
     Lingo::NamedRule.new(name, self)
   end
 

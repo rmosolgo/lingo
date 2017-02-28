@@ -1,5 +1,6 @@
 class Lingo::StringTerminal < Lingo::Rule
   getter :search
+  @search : String
 
   def initialize(search : String | Char)
     @search = search.to_s

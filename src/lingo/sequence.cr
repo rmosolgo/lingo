@@ -1,8 +1,9 @@
 class Lingo::Sequence < Lingo::Rule
   alias Parts = Array(Lingo::Rule)
   getter :parts
+  @parts : Parts
 
-  def initialize(incoming_parts=Parts.new, @name=nil)
+  def initialize(incoming_parts = Parts.new, @name = nil.as(String?))
     new_parts = Parts.new
     incoming_parts.each do |input|
       if input.is_a?(Lingo::Sequence)

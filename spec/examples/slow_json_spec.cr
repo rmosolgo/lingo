@@ -20,7 +20,7 @@ describe "SlowJSON" do
       "d" => nil,
       "e" => 3.321,
       "f" => {"f1" => "f2"},
-      "g" => [1, nil, {"h" => "str"}]
+      "g" => [1, nil, {"h" => "str"}],
     }
 
     res.should eq(expected)
