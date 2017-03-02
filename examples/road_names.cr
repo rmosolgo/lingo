@@ -1,8 +1,8 @@
-
-
 module RoadNames
   class Road
     property :number, :interstate, :direction, :business
+    @number : Int32?
+    @direction : String?
     @interstate = false
     @business = false
   end
@@ -29,10 +29,10 @@ module RoadNames
     # Express optionality with `.maybe`
     # Name matched strings with `.as`
     rule(:road_name) {
-      interstate.as(:interstate).maybe >>
-        number.as(:number) >>
-        direction.as(:direction).maybe >>
-        business.as(:business).maybe
+      interstate.named(:interstate).maybe >>
+        number.named(:number) >>
+        direction.named(:direction).maybe >>
+        business.named(:business).maybe
     }
     # You MUST name a starting rule:
     root(:road_name)
@@ -40,6 +40,7 @@ module RoadNames
 
   class RoadVisitor < Lingo::Visitor
     getter :road
+
     def initialize
       @road = Road.new
     end
@@ -67,7 +68,7 @@ module RoadNames
   end
 
   def self.parse_road(input_str)
-    ast = RoadParser.parse(input_str)
+    ast = RoadParser.new.parse(input_str)
     visitor = RoadVisitor.new
     visitor.visit(ast)
     visitor.road

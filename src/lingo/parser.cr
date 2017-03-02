@@ -13,13 +13,13 @@ class Lingo::Parser
 
   macro rule(rule_name, &block)
     def {{rule_name.id}}
-      @rules[{{rule_name}}] ||= LazyRule.new { ({{block.body}}) as Lingo::Rule }
+      @rules[{{rule_name}}] ||= LazyRule.new { ({{block.body}}).as(Lingo::Rule) }
     end
   end
 
   macro root(rule_name)
     def root
-      @root ||= {{rule_name.id}}.as({{rule_name}})
+      @root ||= {{rule_name.id}}.named({{rule_name}}).as(Lingo::Rule)
     end
 
     def parse(raw_input)
@@ -29,13 +29,5 @@ class Lingo::Parser
 
   def any
     @rules[:any] ||= match(/./)
-  end
-
-  def self.instance
-    @@instance ||= self.new
-  end
-
-  def self.parse(input_str)
-    instance.parse(input_str)
   end
 end

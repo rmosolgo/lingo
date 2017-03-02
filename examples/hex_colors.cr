@@ -10,26 +10,27 @@ module HexColors
 
   class Color
     property :red, :green, :blue
+
     def to_s
       "<Color red:#{red} green:#{green} blue:#{blue}>"
     end
   end
 
-
   class Parser < Lingo::Parser
     root(:color)
 
-    rule(:color) { hash_mark >> octet.as(:red) >> octet.as(:green) >> octet.as(:blue) }
+    rule(:color) { hash_mark >> octet.named(:red) >> octet.named(:green) >> octet.named(:blue) }
     rule(:hash_mark) { str("#") }
-    rule(:octet) { match(/[0-9A-f]{2}/i)}
+    rule(:octet) { match(/[0-9A-f]{2}/i) }
   end
-
 
   class Visitor < Lingo::Visitor
     getter :color
+
     def initialize
       @color = Color.new
     end
+
     enter(:red) {
       visitor.color.red = node.full_value.upcase
     }

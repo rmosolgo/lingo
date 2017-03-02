@@ -1,8 +1,6 @@
 require "./node"
 
 class Lingo::Visitor
-
-
   macro create_registry
     HandlerRegistry.new do |h, k|
       new_list = HandlerList.new
@@ -11,13 +9,16 @@ class Lingo::Visitor
   end
 
   macro inherited
+    @@enter_handlers : HandlerRegistry
+    @@exit_handlers : HandlerRegistry
+
     alias Handler = Lingo::Node, self -> Nil
     alias HandlerList = Array(Handler)
     alias HandlerRegistry = Hash(Symbol, HandlerList)
+
     @@enter_handlers = create_registry
     @@exit_handlers = create_registry
   end
-
 
   macro enter(rule_name, &block)
     @@enter_handlers[{{rule_name}}] << Handler.new { |node, visitor|

@@ -1,7 +1,7 @@
 class Lingo::ParseFailedException < Exception
   property :context
 
-  def initialize(@context)
+  def initialize(@context : Lingo::Context)
     super("Parse failed at #{position} (\"#{next_text(5)}\")")
   end
 

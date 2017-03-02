@@ -6,7 +6,8 @@ class Lingo::PatternTerminal < Lingo::Rule
 
   def parse?(context : Lingo::Context)
     success = false
-    context.remainder.match(@pattern) do |match_data|
+    match_data = context.remainder.match(@pattern)
+    if match_data
       success = true
       match_string = match_data[0]
       match_node = Lingo::Node.new(value: match_string, line: context.line, column: context.column)

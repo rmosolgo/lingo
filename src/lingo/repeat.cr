@@ -1,5 +1,5 @@
 class Lingo::Repeat < Lingo::Rule
-  def initialize(@inner, @from=0, @to=Float32::INFINITY)
+  def initialize(@inner : Lingo::Rule, @from = 0, @to : (Float32 | Int32) = Float32::INFINITY)
   end
 
   def parse?(context : Lingo::Context)

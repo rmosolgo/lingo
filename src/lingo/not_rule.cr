@@ -1,7 +1,7 @@
 require "./rule"
 
 class Lingo::NotRule < Lingo::Rule
-  def initialize(@inner)
+  def initialize(@inner : Lingo::Rule)
   end
 
   def parse?(context : Lingo::Context)
