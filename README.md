@@ -68,12 +68,12 @@ class RoadParser < Lingo::Parser
 
   # Express sequence with >>
   # Express optionality with `.maybe`
-  # Name matched strings with `.as`
+  # Name matched strings with `.named`
   rule(:road_name) {
-    interstate.as(:interstate).maybe >>
-      number.as(:number) >>
-      direction.as(:direction).maybe >>
-      business.as(:business).maybe
+    interstate.named(:interstate).maybe >>
+      number.named(:number) >>
+      direction.named(:direction).maybe >>
+      business.named(:business).maybe
   }
   # You MUST name a starting rule:
   root(:road_name)
@@ -102,13 +102,13 @@ These methods help you create rules:
 - `a.repeat` matches _one-or-more_ `a`s
 - `a.repeat(0)` matches _zero-or-more_ `a`s
 - `a.absent` matches _not-`a`_
-- `a.as(:a)` names the result `:a` for handling by a visitor
+- `a.named(:a)` names the result `:a` for handling by a visitor
 
 ### Visitor
 
 After parsing, you get a tree of `Lingo::Node`s. To turn that into an application object, write a visitor.
 
-The visitor may define `enter` and `exit` hooks for nodes named with `.as` in the Parser. It may set up some state during `#initialize`, then access itself from the `visitor` variable during hooks.
+The visitor may define `enter` and `exit` hooks for nodes named with `.named` in the Parser. It may set up some state during `#initialize`, then access itself from the `visitor` variable during hooks.
 
 
 ```ruby
@@ -144,7 +144,7 @@ end
 
 #### Visitor Hooks
 
-During the depth-first visitation of the resulting tree of `Lingo::Node`s, you can handle visits to nodes named with `.as`:
+During the depth-first visitation of the resulting tree of `Lingo::Node`s, you can handle visits to nodes named with `.named`:
 
 - `enter(:match)` is called when entering a node named `:match`
 - `exit(:match)` is called when exiting a node named `:match`
