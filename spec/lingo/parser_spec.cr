@@ -17,7 +17,7 @@ describe "Lingo::Parser" do
 
     describe "on errors" do
       it "tells how far it got" do
-        expect_raises(Lingo::ParseFailedException, "at 3:15") do
+        expect_raises(Lingo::ParseFailedException, "at 3:16") do
           Math.parser.parse("1
           +
           3 + 3%%")

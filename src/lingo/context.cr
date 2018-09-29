@@ -38,7 +38,7 @@ class Lingo::Context
     @line += new_lines
 
     if new_lines > 0
-      @column = last_line.size
+      @column = last_line.size + 1
     else
       @column += last_line.size
     end
