@@ -22,7 +22,7 @@ Let's write a parser for highway names. The result will be a method for turning 
 
 ```ruby
 def parse_road(input_str)
-  ast = RoadParser.parse(input_str)
+  ast = RoadParser.new.parse(input_str)
   visitor = RoadVisitor.new
   visitor.visit(ast)
   visitor.road
@@ -82,10 +82,10 @@ end
 
 #### Applying the Parser
 
-The resulting class has a `.parse` method which returns a tree of `Lingo::Node`s.
+An instance of a `Lingo::Parser` subclass has a `.parse` method which returns a tree of `Lingo::Node`s.
 
 ```ruby
-RoadParser.parse("250B") # => <Lingo::Node ... >
+RoadParser.new.parse("250B") # => <Lingo::Node ... >
 ```
 
 It uses the rule named by `root`.
