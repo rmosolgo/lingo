@@ -23,14 +23,14 @@ class Lingo::Visitor
   macro enter(rule_name, &block)
     @@enter_handlers[{{rule_name}}] << Handler.new { |node, visitor|
       {{block.body}}
-      return nil
+      next nil
     }
   end
 
   macro exit(rule_name, &block)
     @@exit_handlers[{{rule_name}}] << Handler.new { |node, visitor|
       {{block.body}}
-      return nil
+      next nil
     }
   end
 
