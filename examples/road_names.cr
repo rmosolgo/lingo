@@ -1,3 +1,5 @@
+require "../src/lingo"
+
 module RoadNames
   class Road
     property :number, :interstate, :direction, :business
